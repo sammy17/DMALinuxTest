@@ -11,8 +11,8 @@ unsigned int dma_get(unsigned int* dma_virtual_address, int offset) {
 
 int dma_mm2s_sync(unsigned int* dma_virtual_address) {
     unsigned int mm2s_status =  dma_get(dma_virtual_address, MM2S_STATUS_REGISTER);
-    while(!(mm2s_status & 1) ){
-        dma_s2mm_status(dma_virtual_address);
+    while(!((mm2s_status>>1) & 1) ){
+        //dma_s2mm_status(dma_virtual_address);
         dma_mm2s_status(dma_virtual_address);
 
         mm2s_status =  dma_get(dma_virtual_address, MM2S_STATUS_REGISTER);
@@ -21,9 +21,9 @@ int dma_mm2s_sync(unsigned int* dma_virtual_address) {
 
 int dma_s2mm_sync(unsigned int* dma_virtual_address) {
     unsigned int s2mm_status = dma_get(dma_virtual_address, S2MM_STATUS_REGISTER);
-    while(!(s2mm_status & 1<<12) || !(s2mm_status & 1<<1)){
+    while(!((s2mm_status>>1) & 1)){
         dma_s2mm_status(dma_virtual_address);
-        dma_mm2s_status(dma_virtual_address);
+        //dma_mm2s_status(dma_virtual_address);
 
         s2mm_status = dma_get(dma_virtual_address, S2MM_STATUS_REGISTER);
     }
