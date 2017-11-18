@@ -1,9 +1,13 @@
 
 #include "axidma.h"
 
-unsigned int dma_set(unsigned int* dma_virtual_address, int offset, unsigned int value) {
+unsigned int dma_set_reg(unsigned int* dma_virtual_address, int offset, unsigned int value) {
     unsigned int data = dma_get(dma_virtual_address,offset);
     dma_virtual_address[offset>>2] = (data | value);
+}
+
+unsigned int dma_set(unsigned int* dma_virtual_address, int offset, unsigned int value) {
+    dma_virtual_address[offset>>2] = value;
 }
 
 unsigned int dma_get(unsigned int* dma_virtual_address, int offset) {
@@ -108,8 +112,8 @@ unsigned int * dma_init_2ch(int fd, unsigned int base_addr,unsigned int src, uns
 	// dma_set(virtual_address, MM2S_CONTROL_REGISTER, 1);
 
     printf("Halting DMA\n");
-    dma_set(virtual_address, S2MM_CONTROL_REGISTER, 0x00010002);
-    dma_set(virtual_address, MM2S_CONTROL_REGISTER, 0x00010002);
+    dma_set_reg(virtual_address, S2MM_CONTROL_REGISTER, 0x00010002);
+    dma_set_reg(virtual_address, MM2S_CONTROL_REGISTER, 0x00010002);
     dma_s2mm_status(virtual_address);
     dma_mm2s_status(virtual_address);
     dma_mm2s_control(virtual_address);

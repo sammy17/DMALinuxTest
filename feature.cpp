@@ -103,8 +103,14 @@ int main(int argc, char *argv[]) {
         dma_s2mm_status(dma_1_base);
         dma_mm2s_status(dma_1_base);
        
-        dma_transmit_data(dma_1_base,sizeof(unsigned int) * 100);
-        dma_receive_data(dma_1_base,sizeof(unsigned int) * 100);
+        // dma_transmit_data(dma_1_base,sizeof(unsigned int) * 100);
+        // dma_receive_data(dma_1_base,sizeof(unsigned int) * 100);
+
+        dma_set(dma_1_base, S2MM_LENGTH, 100);
+        dma_set(dma_1_base, MM2S_LENGTH, 100);
+        
+        dma_set(dma_1_base, S2MM_CONTROL_REGISTER, 0x0000f001);
+        dma_set(dma_1_base, MM2S_CONTROL_REGISTER, 0x0000f001);
 
         dma_config_print(dma_1_base);
 
@@ -116,8 +122,11 @@ int main(int argc, char *argv[]) {
 
         printf("started\n");
 
-        //dma_mm2s_sync(dma_1_base);
-        //dma_s2mm_sync(dma_1_base);
+        dma_mm2s_sync(dma_1_base);
+        dma_s2mm_sync(dma_1_base);
+
+        dma_s2mm_status(dma_1_base);
+        dma_mm2s_status(dma_1_base);
 
     }
 
