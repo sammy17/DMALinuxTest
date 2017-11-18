@@ -2,7 +2,8 @@
 #include "axidma.h"
 
 unsigned int dma_set(unsigned int* dma_virtual_address, int offset, unsigned int value) {
-    dma_virtual_address[offset>>2] = value;
+    unsigned int data = dma_get(dma_virtual_address,offset);
+    dma_virtual_address[offset>>2] = (data | value);
 }
 
 unsigned int dma_get(unsigned int* dma_virtual_address, int offset) {
@@ -90,19 +91,28 @@ void memdump(void* virtual_address, int byte_count) {
 unsigned int * dma_init_2ch(int fd, unsigned int base_addr,unsigned int src, unsigned int dst){
 	unsigned int * virtual_address = mmap(NULL, AXILITE_RANGE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, base_addr);
 	printf("Resetting DMA\n");
-    dma_set(virtual_address, S2MM_CONTROL_REGISTER, 4);
+    //dma_set(virtual_address, S2MM_CONTROL_REGISTER, 4);
     dma_set(virtual_address, MM2S_CONTROL_REGISTER, 4);
-    dma_s2mm_status(virtual_address);
+    dma_mm2s_control(virtual_address);
+    //dma_s2mm_status(virtual_address);
     dma_mm2s_status(virtual_address);
+    unsigned int stat = dma_get(virtual_address, MM2S_CONTROL_REGISTER);
+    while ((stat>>3) & 1){
+        printf("Reseting in progress\n");
+        stat = dma_get(virtual_address, MM2S_CONTROL_REGISTER);
+    }
 
-    dma_set(virtual_address, S2MM_CONTROL_REGISTER, 0x0001);
-	dma_set(virtual_address, MM2S_CONTROL_REGISTER, 0x0001);
+    dma_mm2s_control(virtual_address);
+
+ //    dma_set(virtual_address, S2MM_CONTROL_REGISTER, 1);
+	// dma_set(virtual_address, MM2S_CONTROL_REGISTER, 1);
 
     printf("Halting DMA\n");
-    dma_set(virtual_address, S2MM_CONTROL_REGISTER, 0);
-    dma_set(virtual_address, MM2S_CONTROL_REGISTER, 0);
+    dma_set(virtual_address, S2MM_CONTROL_REGISTER, 0x00000000);
+    dma_set(virtual_address, MM2S_CONTROL_REGISTER, 0x00000000);
     dma_s2mm_status(virtual_address);
     dma_mm2s_status(virtual_address);
+    dma_mm2s_control(virtual_address);
 
     printf("Writing destination address\n");
     dma_set(virtual_address, S2MM_DESTINATION_ADDRESS, dst); // Write destination address
@@ -144,12 +154,16 @@ void axilite_release(unsigned int * virtual_address){
 void dma_receive_data(unsigned int * virtual_address, unsigned int byte_count){
 	printf("Writing S2MM transfer length...\n");
     dma_set(virtual_address, S2MM_LENGTH, byte_count);
+    dma_set(virtual_address, S2MM_CONTROL_REGISTER, 0x00000001);
+    dma_s2mm_control(virtual_address);
     dma_s2mm_status(virtual_address);
 }
 
 void dma_transmit_data(unsigned int * virtual_address, unsigned int byte_count){
 	printf("Writing MM2S transfer length...\n");
     dma_set(virtual_address, MM2S_LENGTH, byte_count);
+    dma_set(virtual_address, MM2S_CONTROL_REGISTER, 0x00000001);
+    dma_mm2s_control(virtual_address);
     dma_mm2s_status(virtual_address);
 }
 
