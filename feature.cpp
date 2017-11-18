@@ -86,10 +86,12 @@ int main(int argc, char *argv[]) {
 
 
     memcpy(src,frame1,sizeof(unsigned int)*100);
-    
 
     // Initialize DMA 0
     unsigned int * dma_1_base = dma_init_2ch(fdIP,XPAR_AXI_DMA_0_BASEADDR,TX_BASE_ADDR,RX_BASE_ADDR);
+
+    dma_s2mm_control(dma_1_base);
+    dma_mm2s_control(dma_1_base);
    
     /***************************** Begin looping here *********************/
     auto begin = std::chrono::high_resolution_clock::now();
@@ -105,6 +107,9 @@ int main(int argc, char *argv[]) {
         dma_receive_data(dma_1_base,sizeof(unsigned int) * 100);
 
         dma_config_print(dma_1_base);
+
+        dma_s2mm_control(dma_1_base);
+        dma_mm2s_control(dma_1_base);
 
         dma_s2mm_status(dma_1_base);
         dma_mm2s_status(dma_1_base);

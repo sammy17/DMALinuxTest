@@ -27,6 +27,9 @@ int dma_s2mm_sync(unsigned int* dma_virtual_address);
 void dma_s2mm_status(unsigned int* dma_virtual_address);
 void dma_mm2s_status(unsigned int* dma_virtual_address);
 void memdump(void* virtual_address, int byte_count);
+void dma_s2mm_control(unsigned int* dma_virtual_address);
+void dma_mm2s_control(unsigned int* dma_virtual_address);
+
 
 unsigned int* dma_init_2ch(int fd, unsigned int base_addr,unsigned int src, unsigned int dst);
 unsigned int* dma_init_1ch(int fd, unsigned int base_addr,unsigned int src);

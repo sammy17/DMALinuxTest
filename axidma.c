@@ -29,6 +29,18 @@ int dma_s2mm_sync(unsigned int* dma_virtual_address) {
     }
 }
 
+void dma_s2mm_control(unsigned int* dma_virtual_address) {
+    unsigned int status = dma_get(dma_virtual_address, S2MM_STATUS_REGISTER);
+    printf("Stream to memory-mapped control (0x%08x@0x%02x):", status, S2MM_CONTROL_REGISTER);
+    printf("\n");
+}
+
+void dma_mm2s_control(unsigned int* dma_virtual_address) {
+    unsigned int status = dma_get(dma_virtual_address, MM2S_STATUS_REGISTER);
+    printf("Memory-mapped to stream control (0x%08x@0x%02x):", status, MM2S_CONTROL_REGISTER);
+    printf("\n");
+}
+
 void dma_s2mm_status(unsigned int* dma_virtual_address) {
     unsigned int status = dma_get(dma_virtual_address, S2MM_STATUS_REGISTER);
     printf("Stream to memory-mapped status (0x%08x@0x%02x):", status, S2MM_STATUS_REGISTER);
