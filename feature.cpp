@@ -97,16 +97,22 @@ int main(int argc, char *argv[]) {
     for (int it=0;it<1;it++){
        
         printf("t1\n");
+
+        dma_s2mm_status(dma_1_base);
+        dma_mm2s_status(dma_1_base);
        
         dma_transmit_data(dma_1_base,sizeof(unsigned int) * 100);
         dma_receive_data(dma_1_base,sizeof(unsigned int) * 100);
 
         dma_config_print(dma_1_base);
 
+        dma_s2mm_status(dma_1_base);
+        dma_mm2s_status(dma_1_base);
+
         printf("started\n");
 
-        dma_mm2s_sync(dma_1_base);
-        dma_s2mm_sync(dma_1_base);
+        //dma_mm2s_sync(dma_1_base);
+        //dma_s2mm_sync(dma_1_base);
 
     }
 
