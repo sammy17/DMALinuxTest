@@ -48,9 +48,9 @@ uint8_t * TX_BASE_PTR = (uint8_t *) (TX_BASE_ADDR);
 uint8_t * RX_BASE_PTR = (uint8_t *) (RX_BASE_ADDR);
 
 //XBacksub backsub;
-XFeature feature;
+//XFeature feature;
 uint32_t * src;
-uint8_t * dst;
+uint32_t * dst;
 int fdIP;
 
 uint8_t * ybuffer = new uint8_t[N];

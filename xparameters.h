@@ -13,7 +13,7 @@
 
 /******************************************************************/
 
-#include "xparameters_ps.h"
+//#include "xparameters_ps.h"
 
 #define STDIN_BASEADDRESS 0xE0001000
 #define STDOUT_BASEADDRESS 0xE0001000

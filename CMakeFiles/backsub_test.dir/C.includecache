@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/debian/final/DMALinuxTest/axidma.c
+axidma.h
+/home/debian/final/DMALinuxTest/axidma.h
+
+/home/debian/final/DMALinuxTest/axidma.h
+stdio.h
+-
+unistd.h
+-
+fcntl.h
+-
+termios.h
+-
+sys/mman.h
+-
+

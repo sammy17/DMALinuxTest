@@ -1,0 +1,3 @@
+/home/debian/final/DMALinuxTest/CMakeFiles/rebuild_cache.dir
+/home/debian/final/DMALinuxTest/CMakeFiles/edit_cache.dir
+/home/debian/final/DMALinuxTest/CMakeFiles/backsub_test.dir
